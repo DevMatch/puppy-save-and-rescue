@@ -78,15 +78,40 @@ export const getPets = ((async (event) => {
 export const getPetById = ((async (event) => {
     // Initialize the DB
     let db = await init();
+    let petId : Number = 0
+    if (event.pathParameters != undefined) {
+        petId = Number(event.pathParameters.id)
+    }
 
     // Prepare an sql statement
     const stmt = db.prepare("SELECT * FROM pets WHERE id=:id ");
 
     // Bind values to the parameters and fetch the results of the query
-    const result = stmt.getAsObject({':id' : 1});
+    const result = stmt.getAsObject({':id' : petId});
 
     return { statusCode: 200, body: JSON.stringify(result) }
 }))
+
+
+/**
+ * Post create new pet. Route: /api/pets/
+ *
+ **/
+ export const createPet = ((async (event) => {
+    // Read the body from the request
+    let db = await init();
+    let petName : String = ""
+    let body: any = {}
+    if (event.body != undefined) {
+      body = JSON.parse(event.body)
+    }
+    petName = body.name
+    const stmt = db.prepare("INSERT INTO pets (name) VALUES (:name)");
+    const result = stmt.getAsObject({':name' : petName});
+    return { statusCode: 200 }
+  
+  }))
+
 
 /**
  * Get an owner by ID. This should return all of the owners perts.
