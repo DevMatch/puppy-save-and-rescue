@@ -20,12 +20,6 @@ functions:
       - httpApi:
           method: GET
           path: /api/pets/{id}
-  createPet:
-    handler: dist/api.createPet
-    events:
-      - httpApi:
-          method: POST
-          path: /api/pets/
   getOwnerById:
     handler: dist/api.getOwnerById
     events:

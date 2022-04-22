@@ -93,25 +93,6 @@ export const getPetById = ((async (event) => {
 }))
 
 
-/**
- * Post create new pet. Route: /api/pets/
- *
- **/
- export const createPet = ((async (event) => {
-    // Read the body from the request
-    let db = await init();
-    let petName : String = ""
-    let body: any = {}
-    if (event.body != undefined) {
-      body = JSON.parse(event.body)
-    }
-    petName = body.name
-    const stmt = db.prepare("INSERT INTO pets (name) VALUES (:name)");
-    const result = stmt.getAsObject({':name' : petName});
-    return { statusCode: 200 }
-  
-  }))
-
 
 /**
  * Get an owner by ID. This should return all of the owners perts.
@@ -157,7 +138,9 @@ export const getLostPets = ((async (event) => {
     let db = await init();
 
     // TODO: Finish implementation here
+    const result = db.exec("SELECT * FROM pets WHERE id not in (select pet_id from owners_pets) ");
+    
+    return { statusCode: 200, body: JSON.stringify(result) }
 
-    return { statusCode: 200 }
 }))
 
