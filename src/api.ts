@@ -138,7 +138,7 @@ export const getOwnerById = ((async (event) => {
  **/
 export const getLostPets = ((async (event) => {
     // Initialize the DB
-    //let db = await init();
+    let db = await init();
 
     // TODO: Finish implementation here
     //let lostpets = []
