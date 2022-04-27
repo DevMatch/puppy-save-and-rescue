@@ -141,18 +141,19 @@ export const getLostPets = ((async (event) => {
     let db = await init();
 
     // TODO: Finish implementation here
-    // lostpets = []
+    let lostpets = []
     // let pet_Id : Number = 0
     // Get all the pets and their owners
-    const lostQuery = db.prepare("SELECT pets.* FROM pets left join owners_pets ON owners_pets.pet_id = pets.id;");
-    // let lostpets = PetslostQuery.name;
+    const lostQuery = db.prepare("SELECT pets.* FROM pets left join owners_pets ON owners_pets.pet_id = pets.id where owners_pets.owner_id IS null;");
+    //let ownerDetails = ownerDetailsQuery.getAsObject({':names' : NULL});
+    let lostpets = lostQuery.name;
     // const lostpets = db.exec("SELECT * FROM PetslostQuery");
     //const lostpetnames = serialize(PetslostQuery.name);
 
-    //for (let i = 0; i < lostQuery.length; i++) {
+    //for (let i = 0; i < lostQuery.rows.length; i++) {
     //    text += cars[i] + "<br>";
     //}
 
-    return { statusCode: 200, body: JSON.stringify(lostQuery.name) }
+    return { statusCode: 200, body: JSON.stringify(lostpets) }
 }))
 
