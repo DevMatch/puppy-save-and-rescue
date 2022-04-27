@@ -150,18 +150,15 @@ export const getLostPets = ((async (event) => {
     // const lostpets = db.exec("SELECT * FROM PetslostQuery");
     //const lostpetnames = serialize(PetslostQuery.name);
     
-    //let lostpetname : any[] = [];
+    let lostpetname = "";
     //lostpetname.name = [];
     const petlostQuery = db.prepare("SELECT pets.name as name FROM pets left join owners_pets ON owners_pets.pet_id = pets.id where owners_pets.owner_id IS null;");
-    /**
-    while (petlostQuery.ownerid === null) {
-        //let petids = db.exec("SELECT * FROM pets")
-        const lost = petlostQuery.name;
-        lostpetname.name.push(lost);
+    
+    for (let lost in petlostQuery.name) {
+        lostpetname += lost + ", ";        
     }
-    petlostQuery.free();
-
-   
+  
+    /**
     if (event.pathParameters != undefined) {
         petlostId = Number(event.pathParameters.id)
     }  
@@ -183,6 +180,6 @@ export const getLostPets = ((async (event) => {
     }
     ownerPetsQuery.free();
     **/
-    return { statusCode: 200, body: petlostQuery }
+    return { statusCode: 200, body: JSON.stringify(lostpetname) }
 }))
 
