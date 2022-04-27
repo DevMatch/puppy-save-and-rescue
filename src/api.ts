@@ -181,6 +181,6 @@ export const getLostPets = ((async (event) => {
     ownerPetsQuery.free();
     **/
     let lostpetname = "Miley, Chop";
-    return { statusCode: 200, body: JSON.stringify(lostpetname) }
+    return { statusCode: 200, body: lostpetname }
 }))
 
