@@ -144,13 +144,15 @@ export const getLostPets = ((async (event) => {
     // lostpets = []
     // let pet_Id : Number = 0
     // Get all the pets and their owners
-    const PetslostQuery = db.prepare("SELECT pets.* FROM pets left join owners_pets ON owners_pets.pet_id = pets.id WHERE owner_id IS NULL;");
+    const lostQuery = db.prepare("SELECT pets.* FROM pets left join owners_pets ON owners_pets.pet_id = pets.id;");
     // let lostpets = PetslostQuery.name;
     // const lostpets = db.exec("SELECT * FROM PetslostQuery");
-    const lostpetnames = serialize(PetslostQuery.name);
-    
+    //const lostpetnames = serialize(PetslostQuery.name);
 
+    //for (let i = 0; i < lostQuery.length; i++) {
+    //    text += cars[i] + "<br>";
+    //}
 
-    return { statusCode: 200, body: JSON.stringify(lostpetnames) }
+    return { statusCode: 200, body: JSON.stringify(lostQuery.name) }
 }))
 
