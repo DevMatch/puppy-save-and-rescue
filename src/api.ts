@@ -83,7 +83,7 @@ export const getPetById = ((async (event) => {
     const stmt = db.prepare("SELECT * FROM pets WHERE id=:id ");
 
     // Bind values to the parameters and fetch the results of the query
-    const result = stmt.getAsObject({':id' : 1});
+    const result = stmt.getAsObject({':id' : event});
 
     return { statusCode: 200, body: JSON.stringify(result) }
 }))
@@ -101,15 +101,19 @@ export const getOwnerById = ((async (event) => {
     if (event.pathParameters != undefined) {
         ownerId = Number(event.pathParameters.id)
     }
-
+    
+  
     // Prepare an sql statement and Bind values to the parameters and fetch the results of the query
     const ownerDetailsQuery = db.prepare("SELECT * FROM owners WHERE id=:id ");
     let ownerDetails = ownerDetailsQuery.getAsObject({':id' : ownerId});
     ownerDetailsQuery.free();
 
+    
     // Get all the pets for this owner
-    const ownerPetsQuery = db.prepare("SELECT pets.* FROM pets inner join owners_pets ON owners_pets.pet_id = pets.id where owners_pets.owner_id = :ownerid;");
+    const ownerPetsQuery = db.prepare("SELECT pets.* FROM pets inner join owners_pets ON owners_pets.pet_id = pets.id where owners_pets.owner_id = ownerid;");
     const result = ownerPetsQuery.bind({':ownerid' : ownerId});
+
+    
 
     ownerDetails.pets = [];
     while(ownerPetsQuery.step()) {
@@ -132,7 +136,14 @@ export const getLostPets = ((async (event) => {
     let db = await init();
 
     // TODO: Finish implementation here
+    // lostpets = []
+    // let pet_Id : Number = 0
+    // Get all the pets and their owners
+    const PetslostQuery = db.exec("SELECT pets.id AS pet_Id, pets.name AS pet_name, owners_pets.owner_id AS owner_id FROM pets left join owners_pets ON owners_pets.pet_id = pets.id WHERE owner_id IS NULL;");
+    // let lostpets = PetslostQuery.pet_name;
+    // const result = db.exec("SELECT * FROM PetslostQuery");
+    const result = serialize(PetslostQuery);
 
-    return { statusCode: 200 }
+    return { statusCode: 200, body: JSON.stringify(result) }
 }))
 
