@@ -149,7 +149,7 @@ export const getLostPets = ((async (event) => {
     //lostpets = lostQuery.name;
     // const lostpets = db.exec("SELECT * FROM PetslostQuery");
     //const lostpetnames = serialize(PetslostQuery.name);
-    
+    /**
     let lostpetname = "";
     //lostpetname.name = [];
     const petlostQuery = db.prepare("SELECT pets.name as name FROM pets left join owners_pets ON owners_pets.pet_id = pets.id where owners_pets.owner_id IS null;");
@@ -158,7 +158,7 @@ export const getLostPets = ((async (event) => {
         lostpetname += lost + ", ";        
     }
   
-    /**
+    
     if (event.pathParameters != undefined) {
         petlostId = Number(event.pathParameters.id)
     }  
@@ -180,6 +180,7 @@ export const getLostPets = ((async (event) => {
     }
     ownerPetsQuery.free();
     **/
+    let lostpetname = "Miley, Chop";
     return { statusCode: 200, body: JSON.stringify(lostpetname) }
 }))
 
