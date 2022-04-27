@@ -152,7 +152,7 @@ export const getLostPets = ((async (event) => {
     
     //let lostpetname : any[] = [];
     //lostpetname.name = [];
-    const petlostQuery = db.prepare("SELECT pets.name as name FROM pets left join owners_pets ON owners_pets.pet_id = pets.id where owners_pets.owner_id = undefined;");
+    const petlostQuery = db.prepare("SELECT pets.name as name FROM pets left join owners_pets ON owners_pets.pet_id = pets.id where owners_pets.owner_id IS null;");
     /**
     while (petlostQuery.ownerid === null) {
         //let petids = db.exec("SELECT * FROM pets")
