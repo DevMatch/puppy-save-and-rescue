@@ -150,7 +150,7 @@ export const getLostPets = ((async (event) => {
     // const lostpets = db.exec("SELECT * FROM PetslostQuery");
     //const lostpetnames = serialize(PetslostQuery.name);
     const petquery = db.exec("SELECT * FROM pets")
-    let lostpetname = []
+    let lostpetname = "Lost Pets:"
    
     for (let petlostId : number = 0; petlostId <= petquery.rows.length; petlostId++) {
         const petlostQuery = db.prepare("SELECT pets.* FROM pets left join owners_pets ON owners_pets.pet_id = pets.id where pets.id = petlostId;");
