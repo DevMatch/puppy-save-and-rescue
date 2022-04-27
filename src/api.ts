@@ -146,7 +146,7 @@ export const getLostPets = ((async (event) => {
     // Get all the pets and their owners
     const lostQuery = db.prepare("SELECT pets.* FROM pets left join owners_pets ON owners_pets.pet_id = pets.id where owners_pets.owner_id IS null;");
     //let ownerDetails = ownerDetailsQuery.getAsObject({':names' : NULL});
-    let lostpets = lostQuery.name;
+    lostpets = lostQuery.name;
     // const lostpets = db.exec("SELECT * FROM PetslostQuery");
     //const lostpetnames = serialize(PetslostQuery.name);
 
