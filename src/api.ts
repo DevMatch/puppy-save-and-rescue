@@ -153,7 +153,7 @@ export const getLostPets = ((async (event) => {
     //for (let i = 0; i < lostQuery.rows.length; i++) {
     //    text += cars[i] + "<br>";
     //}
-    let ownerId : Number = null
+    let ownerId : null
   
     // Prepare an sql statement and Bind values to the parameters and fetch the results of the query
     const ownerDetailsQuery = db.prepare("SELECT * FROM owners WHERE id=:id ");
