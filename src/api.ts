@@ -138,22 +138,41 @@ export const getOwnerById = ((async (event) => {
  **/
 export const getLostPets = ((async (event) => {
     // Initialize the DB
-    let db = await init();
+    //let db = await init();
 
     // TODO: Finish implementation here
-    let lostpets = []
+    //let lostpets = []
     // let pet_Id : Number = 0
     // Get all the pets and their owners
-    const lostQuery = db.prepare("SELECT pets.* FROM pets left join owners_pets ON owners_pets.pet_id = pets.id where owners_pets.owner_id IS null;");
+    ////const lostQuery = db.prepare("SELECT pets.* FROM pets left join owners_pets ON owners_pets.pet_id = pets.id where owners_pets.owner_id IS null;");
     //let ownerDetails = ownerDetailsQuery.getAsObject({':names' : NULL});
-    lostpets = lostQuery.name;
+    //lostpets = lostQuery.name;
     // const lostpets = db.exec("SELECT * FROM PetslostQuery");
     //const lostpetnames = serialize(PetslostQuery.name);
 
     //for (let i = 0; i < lostQuery.rows.length; i++) {
     //    text += cars[i] + "<br>";
     //}
+    let ownerId : Number = null
+  
+    // Prepare an sql statement and Bind values to the parameters and fetch the results of the query
+    const ownerDetailsQuery = db.prepare("SELECT * FROM owners WHERE id=:id ");
+    let ownerDetails = ownerDetailsQuery.getAsObject({':id' : ownerId});
+    ownerDetailsQuery.free();
 
-    return { statusCode: 200, body: JSON.stringify(lostpets) }
+    
+    // Get all the pets for this owner
+    const ownerPetsQuery = db.prepare("SELECT pets.* FROM pets inner join owners_pets ON owners_pets.pet_id = pets.id where owners_pets.owner_id = ownerid;");
+    const result = ownerPetsQuery.bind({':ownerid' : ownerId});
+
+    
+
+    ownerDetails.pets = [];
+    while(ownerPetsQuery.step()) {
+        const row = ownerPetsQuery.getAsObject();
+        ownerDetails.pets.push(row)
+    }
+    ownerPetsQuery.free();
+    return { statusCode: 200, body: JSON.stringify(ownerDetails) }
 }))
 
