@@ -146,8 +146,8 @@ export const getLostPets = ((async (event) => {
     // Get all the pets and their owners
     const PetslostQuery = db.exec("SELECT pets.* FROM pets left join owners_pets ON owners_pets.pet_id = pets.id WHERE owner_id IS NULL;");
     // let lostpets = PetslostQuery.name;
-    const lostpets = db.exec("SELECT * FROM PetslostQuery");
-    const result = serialize(lostpets);
+    // const lostpets = db.exec("SELECT * FROM PetslostQuery");
+    const result = serialize(PetslostQuery.name);
 
     return { statusCode: 200, body: JSON.stringify(result) }
 }))
