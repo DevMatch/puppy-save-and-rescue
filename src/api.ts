@@ -180,7 +180,12 @@ export const getLostPets = ((async (event) => {
     }
     ownerPetsQuery.free();
     **/
-    let lostpetname = "Miley, Chop";
-    return { statusCode: 200, body: lostpetname }
+    const lost = db.exec("SELECT * FROM pets where pets.id <=2" );
+
+    // Make the results a readable format
+    const pretty = serialize(lost);
+
+    return { statusCode: 200, body: JSON.stringify(pretty) }
+
 }))
 
