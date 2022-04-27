@@ -149,13 +149,12 @@ export const getLostPets = ((async (event) => {
     //lostpets = lostQuery.name;
     // const lostpets = db.exec("SELECT * FROM PetslostQuery");
     //const lostpetnames = serialize(PetslostQuery.name);
-    const petids = db.exec("SELECT pets.id FROM pets")
+    //const petids = db.exec("SELECT pets.id FROM pets")
     let lostpetname = "Lost Pets:"
-    
-    for (let petlostId in petids) {
-        const petlostQuery = db.prepare("SELECT pets.* FROM pets left join owners_pets ON owners_pets.pet_id = pets.id where pets.id = petlostId;");
+    const petlostQuery = db.prepare("SELECT pets.* FROM pets left join owners_pets ON owners_pets.pet_id = pets.id;");
+    for (let petIds in petlostQuery.id) {        
         if (petlostQuery.owner_id === null) {
-            lostpetname += "<br>" + petlostId + "<br>"
+            lostpetname += "<br>" + petlostQuery.name + "<br>"
         }        
     }
     /**
@@ -169,7 +168,7 @@ export const getLostPets = ((async (event) => {
 
     
     // search owner for this pet
-    const petOwnerQuery = db.prepare("SELECT pets.* FROM pets inner join owners_pets ON owners_pets.pet_id = pets.id where owners_pets.pet_id = petid;");
+    const petOwnerQuery = db.prepare("SELECT pets.* FROM pets inner join owners_pets ON owners_pets.pet_id = pets.id where owners_pets.pet_id = pet_id;");
     const result = ownerPetsQuery.bind({':ownerid' : ownerId});
    
 
