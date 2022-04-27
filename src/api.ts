@@ -149,30 +149,38 @@ export const getLostPets = ((async (event) => {
     //lostpets = lostQuery.name;
     // const lostpets = db.exec("SELECT * FROM PetslostQuery");
     //const lostpetnames = serialize(PetslostQuery.name);
-
-    //for (let i = 0; i < lostQuery.rows.length; i++) {
-    //    text += cars[i] + "<br>";
-    //}
-    let ownerId : null
-  
+    const petquery = db.exec("SELECT * FROM pets")
+    let lostpetname = []
+   
+    for (let petlostId : number = 0; petlostId <= petquery.rows.length; petlostId++) {
+        const petlostQuery = db.prepare("SELECT pets.* FROM pets left join owners_pets ON owners_pets.pet_id = pets.id where pets.id = petlostId;");
+        if (petlostQuery.owner_id IS null) {
+            lostpetname += "<br>" + petlostId + "<br>";
+        }
+        
+    }
+    /**
+    if (event.pathParameters != undefined) {
+        petlostId = Number(event.pathParameters.id)
+    }  
     // Prepare an sql statement and Bind values to the parameters and fetch the results of the query
-    const ownerDetailsQuery = db.prepare("SELECT * FROM owners WHERE id=:id ");
-    let ownerDetails = ownerDetailsQuery.getAsObject({':id' : ownerId});
-    ownerDetailsQuery.free();
+    const petDetailsQuery = db.prepare("SELECT * FROM pets WHERE id=:id ");
+    let petDetails = petDetailsQuery.getAsObject({':id' : petlostId});
+    petDetailsQuery.free();
 
     
-    // Get all the pets for this owner
-    const ownerPetsQuery = db.prepare("SELECT pets.* FROM pets inner join owners_pets ON owners_pets.pet_id = pets.id where owners_pets.owner_id = ownerid;");
+    // search owner for this pet
+    const petOwnerQuery = db.prepare("SELECT pets.* FROM pets inner join owners_pets ON owners_pets.pet_id = pets.id where owners_pets.pet_id = petid;");
     const result = ownerPetsQuery.bind({':ownerid' : ownerId});
+   
 
-    
-
-    ownerDetails.pets = [];
+    petDetails.pets = [];
     while(ownerPetsQuery.step()) {
         const row = ownerPetsQuery.getAsObject();
         ownerDetails.pets.push(row)
     }
     ownerPetsQuery.free();
-    return { statusCode: 200, body: JSON.stringify(ownerDetails) }
+    **/
+    return { statusCode: 200, body: JSON.stringify(lostpetname) }
 }))
 
