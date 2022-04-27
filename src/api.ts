@@ -155,9 +155,8 @@ export const getLostPets = ((async (event) => {
     for (let petlostId : number = 0; petlostId <= petquery.rows.length; petlostId++) {
         const petlostQuery = db.prepare("SELECT pets.* FROM pets left join owners_pets ON owners_pets.pet_id = pets.id where pets.id = petlostId;");
         if (petlostQuery.owner_id IS null) {
-            lostpetname += "<br>" + petlostId + "<br>";
-        }
-        
+            lostpetname += "<br>" + petlostId + "<br>"
+        }        
     }
     /**
     if (event.pathParameters != undefined) {
