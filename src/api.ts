@@ -180,7 +180,7 @@ export const getLostPets = ((async (event) => {
     }
     ownerPetsQuery.free();
     **/
-    const lost = db.exec("SELECT * FROM pets where pets.id <=2" );
+    const lost = db.exec("SELECT pets.* FROM pets left join owners_pets ON owners_pets.pet_id = pets.id;" );
 
     // Make the results a readable format
     const pretty = serialize(lost);
