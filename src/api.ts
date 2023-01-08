@@ -57,7 +57,7 @@ function serialize(data) {
  * Get pets API. Route: /api/pets/
  *
  **/
-export const getPets = ((async (event) => {
+export const getPets = async (event) => {
     // Initialize the DB
     let db = await init();
 
@@ -65,10 +65,10 @@ export const getPets = ((async (event) => {
     const result = db.exec("SELECT * FROM pets");
 
     // Make the results a readable format
-    const prettyRestults = serialize(result);
+    const prettyResults = serialize(result);
 
-    return { statusCode: 200, body: JSON.stringify(prettyRestults) }
-}))
+    return { statusCode: 200, body: JSON.stringify(prettyResults) }
+}
 
 
 /**
@@ -83,7 +83,7 @@ export const getPetById = ((async (event) => {
     const id = event.pathParameters.id;
 
     // Query the database
-    const result = db.exec("SELECT * FROM pets WHERE id=:${id}");
+    const result = db.exec("SELECT * FROM pets WHERE id=:id");
     const prettyResults = serialize(result);
 
     return { statusCode: 200, body: JSON.stringify(prettyResults) }
