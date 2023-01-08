@@ -79,13 +79,14 @@ export const getPetById = ((async (event) => {
     // Initialize the DB
     let db = await init();
 
-    // Prepare an sql statement
-    const stmt = db.prepare("SELECT * FROM pets WHERE id=:id ");
+    // get the id from the event path parameters
+    const id = event.pathParameters.id;
 
-    // Bind values to the parameters and fetch the results of the query
-    const result = stmt.getAsObject({':id' : 1});
+    // Query the database
+    const result = db.exec("SELECT * FROM pets WHERE id=:${id}");
+    const prettyResults = serialize(result);
 
-    return { statusCode: 200, body: JSON.stringify(result) }
+    return { statusCode: 200, body: JSON.stringify(prettyResults) }
 }))
 
 /**
