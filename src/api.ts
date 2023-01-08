@@ -57,7 +57,7 @@ function serialize(data) {
  * Get pets API. Route: /api/pets/
  *
  **/
-export const getPets = ((async (event) => {
+export const getPets = async (event) => {
     // Initialize the DB
     let db = await init();
 
@@ -65,10 +65,10 @@ export const getPets = ((async (event) => {
     const result = db.exec("SELECT * FROM pets");
 
     // Make the results a readable format
-    const prettyRestults = serialize(result);
+    const prettyResults = serialize(result);
 
-    return { statusCode: 200, body: JSON.stringify(prettyRestults) }
-}))
+    return { statusCode: 200, body: JSON.stringify(prettyResults) }
+}
 
 
 /**
@@ -79,13 +79,14 @@ export const getPetById = ((async (event) => {
     // Initialize the DB
     let db = await init();
 
-    // Prepare an sql statement
-    const stmt = db.prepare("SELECT * FROM pets WHERE id=:id ");
+    // get the id from the event path parameters
+    const id = event.pathParameters.id;
 
-    // Bind values to the parameters and fetch the results of the query
-    const result = stmt.getAsObject({':id' : 1});
+    // Query the database
+    const result = db.exec("SELECT * FROM pets WHERE id=:id");
+    const prettyResults = serialize(result);
 
-    return { statusCode: 200, body: JSON.stringify(result) }
+    return { statusCode: 200, body: JSON.stringify(prettyResults) }
 }))
 
 /**
@@ -131,8 +132,9 @@ export const getLostPets = ((async (event) => {
     // Initialize the DB
     let db = await init();
 
-    // TODO: Finish implementation here
+    // Query the database to find all pets without their owner
+    let lostPets = await db.collection('pets').find({owner: {$exists: false}}).toArray();
 
-    return { statusCode: 200 }
+    return { statusCode: 200, body: JSON.stringify(lostPets) }
 }))
 
