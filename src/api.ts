@@ -132,7 +132,7 @@ export const getLostPets = ((async (event) => {
     // Initialize the DB
     let db = await init();
 
-    // Query the database to find all pets without their owners
+    // Query the database to find all pets without their owner
     let lostPets = await db.collection('pets').find({owner: {$exists: false}}).toArray();
 
     return { statusCode: 200, body: JSON.stringify(lostPets) }
